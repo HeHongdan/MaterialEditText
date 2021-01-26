@@ -3,6 +3,11 @@
   <declare-styleable name="MaterialEditText">
     <!-- 左边文本 -->
     <attr name="met_leftText" format="string" />
+    <!-- 左边文本颜色。 -->
+    <attr name="met_leftTextColor" format="color" />
+    <!-- 左边文本(内)边距。-->
+    <attr name="met_leftTextPaddingRight" format="dimension" />
+
     <!-- 是否改变颜色(获得焦点、错误时)。-->
     <attr name="met_changeColor" format="boolean" />
 

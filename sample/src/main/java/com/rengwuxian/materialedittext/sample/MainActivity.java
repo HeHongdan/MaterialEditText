@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hehongdan.LogUtils;
+import com.hehongdan.materialedittext.MaterialEditText2;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.RegexpValidator;
 
@@ -24,7 +26,22 @@ public class MainActivity extends AppCompatActivity {
 		initSingleLineEllipsisEt();
 		initSetErrorEt();
 		initValidationEt();
+
+
+		initMet_();
   }
+
+	private void initMet_() {
+		final MaterialEditText2 basicEt = (MaterialEditText2) findViewById(R.id.met_);
+		final Button doSp = (Button) findViewById(R.id.doSp);
+		doSp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LogUtils.d("是否相同= "+basicEt.isSemp());
+			}
+		});
+
+	}
 
 	private void initEnableBt() {
 		final EditText basicEt = (EditText) findViewById(R.id.basicEt);

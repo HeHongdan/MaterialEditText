@@ -16,35 +16,44 @@
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            >
 
             <com.hehongdan.materialedittext.MaterialEditText2
-                android:id="@+id/bottomT"
-                android:layout_width="0dp"
+                android:id="@+id/met_"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="输入内容"
                 android:singleLine="true"
-                android:text="千职鹤"
                 android:textSize="15sp"
+                android:text="千职鹤"
+                android:hint="输入内容"
+                app:met_textColorHint="#CCCCCC"
 
                 app:met_changeColor="true"
                 app:met_clearButton="true"
                 app:met_iconLeft="@drawable/ic_e_"
-                app:met_iconPadding="20dp"
                 app:met_iconRight="@drawable/icon"
+                app:met_iconPadding="8dp"
 
                 app:met_maxCharacters="5"
                 app:met_minCharacters="3"
 
-                app:met_textColorHint="#CCCCCC"
 
-
-                app:met_leftText="左边文本"
+                app:met_leftText="名称"
+                app:met_leftTextColor="#CCCCCC"
+                app:met_leftTextPaddingRight="8dp"
 
                 />
             <!--#999999-->
 
+
+            <Button
+                android:text="是否相同"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/doSp"
+                />
         </LinearLayout>
 
 
