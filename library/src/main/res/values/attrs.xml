@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="MaterialEditText">
+    <!-- 左边文本 -->
+    <attr name="met_leftText" format="string" />
     <!-- 是否改变颜色(获得焦点、错误时)。-->
     <attr name="met_changeColor" format="boolean" />
 

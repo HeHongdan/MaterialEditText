@@ -18,15 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="学号"
-                android:textColor="#999999"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <com.hehongdan.materialedittext.MaterialEditText
+            <com.hehongdan.materialedittext.MaterialEditText2
                 android:id="@+id/bottomT"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -45,7 +37,13 @@
                 app:met_maxCharacters="5"
                 app:met_minCharacters="3"
 
-                app:met_textColorHint="#CCCCCC" />
+                app:met_textColorHint="#CCCCCC"
+
+
+                app:met_leftText="左边文本"
+
+                />
+            <!--#999999-->
 
         </LinearLayout>
 
