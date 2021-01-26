@@ -545,8 +545,9 @@ public class MaterialEditText extends AppCompatEditText {
   }
 
   private Bitmap[] generateIconBitmaps(Drawable drawable) {
-    if (drawable == null)
+    if (drawable == null) {
       return null;
+    }
     Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(bitmap);
     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -1276,8 +1277,12 @@ public class MaterialEditText extends AppCompatEditText {
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
 
-    int startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding)) + getPaddingLeft();
-    int endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - iconOuterWidth - iconPadding) - getPaddingRight();
+    int startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding));
+    int endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - iconOuterWidth - iconPadding);
+
+//    int startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding)) + getPaddingLeft();
+//    int endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - iconOuterWidth - iconPadding) - getPaddingRight();
+
     int lineStartY = getScrollY() + getHeight() - getPaddingBottom();
 
     // draw the icon(s)

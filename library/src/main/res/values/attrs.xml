@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="MaterialEditText">
-    <!-- The base color of the line and the texts. Default is black. -->
-    <attr name="met_baseColor" format="color" />
-    <!-- The highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
+    <!-- 是否改变颜色(获得焦点、错误时)。-->
+    <attr name="met_changeColor" format="boolean" />
+
+    <!-- 主题颜色(获得焦点)。The highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
     <attr name="met_primaryColor" format="color" />
+    <!-- 基础颜色。The base color of the line and the texts. Default is black. -->
+    <attr name="met_baseColor" format="color" />
+    <!-- 文本颜色。Text color -->
+    <attr name="met_textColor" format="color" />
+    <!-- 提示文本颜色。Hint Text Color -->
+    <attr name="met_textColorHint" format="color" />
+    <!-- 错误时显示的颜色。The color for when something is wrong.(e.g. exceeding max characters) -->
+    <attr name="met_errorColor" format="color" />
+
+    <!-- 最小文本个数。Min characters count limit. 0 means no limit. -->
+    <attr name="met_minCharacters" format="integer" />
+    <!-- 最大文本个数。max Characters count limit. 0 means no limit. -->
+    <attr name="met_maxCharacters" format="integer" />
+
+    <!-- 左边图标。Left icon -->
+    <attr name="met_iconLeft" format="reference" />
+    <!-- 右边图标。Right icon -->
+    <attr name="met_iconRight" format="reference" />
+    <!-- 是否显示清除按钮。Clear button -->
+    <attr name="met_clearButton" format="boolean" />
+    <!-- 图标主要区域(内)边距。Padding between icon(s) and the main area. 0dp by default. -->
+    <attr name="met_iconPadding" format="dimension" />
+
+
+
+
+
     <!-- How the floating label should be shown. Default is none -->
     <attr name="met_floatingLabel">
       <enum name="none" value="0" />
       <enum name="normal" value="1" />
       <enum name="highlight" value="2" />
     </attr>
-    <!-- The color for when something is wrong.(e.g. exceeding max characters) -->
-    <attr name="met_errorColor" format="color" />
-    <!-- Min characters count limit. 0 means no limit. -->
-    <attr name="met_minCharacters" format="integer" />
-    <!-- max Characters count limit. 0 means no limit. -->
-    <attr name="met_maxCharacters" format="integer" />
     <!-- Whether to show the bottom ellipsis in singleLine mode -->
     <attr name="met_singleLineEllipsis" format="boolean" />
     <!-- Reserved bottom text lines count, no matter if there is some helper/error text. -->
@@ -39,14 +61,6 @@
     <attr name="met_underlineColor" format="color" />
     <!-- Auto validate -->
     <attr name="met_autoValidate" format="boolean" />
-    <!-- Left icon -->
-    <attr name="met_iconLeft" format="reference" />
-    <!-- Right icon -->
-    <attr name="met_iconRight" format="reference" />
-    <!-- Padding between icon(s) and the main area. 8dp by default. -->
-    <attr name="met_iconPadding" format="dimension" />
-    <!-- Clear button -->
-    <attr name="met_clearButton" format="boolean" />
     <!-- The floating label's text size. 12sp by default. -->
     <attr name="met_floatingLabelTextSize" format="dimension" />
     <!-- The floating label's text color. -1 by default. -->
@@ -59,10 +73,6 @@
     <attr name="met_helperTextAlwaysShown" format="boolean" />
     <!-- Whether use animation to show/hide the floating label. True by default. -->
     <attr name="met_floatingLabelAnimating" format="boolean"/>
-    <!-- Text color -->
-    <attr name="met_textColor" format="color" />
-    <!-- Hint Text Color -->
-    <attr name="met_textColorHint" format="color" />
     <!-- Auto validate on focus lost. False by default. -->
     <attr name="met_validateOnFocusLost" format="boolean"/>
     <!-- Whether check the characters count at the beginning it's shown. True by default. -->
