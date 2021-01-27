@@ -19,7 +19,7 @@
             android:orientation="vertical"
             >
 
-            <com.hehongdan.materialedittext.MaterialEditText2
+            <com.hehongdan.materialedittext.MaterialEditText
                 android:id="@+id/met_"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

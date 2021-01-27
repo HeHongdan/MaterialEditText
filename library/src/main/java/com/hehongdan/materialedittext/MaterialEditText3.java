@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -53,7 +54,7 @@ public class MaterialEditText3 extends AppCompatEditText {
 
 
     /** 之前的文本内容。 */
-    private String proText;
+    private String priorText;
 
 
 
@@ -465,18 +466,23 @@ public class MaterialEditText3 extends AppCompatEditText {
         if (changeColor) {
             iconBitmaps[0] = origin.copy(Bitmap.Config.ARGB_8888, true);
             Canvas canvas = new Canvas(iconBitmaps[0]);
+            //抗锯齿
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             canvas.drawColor(baseColor & 0x00ffffff | (Colors.isLight(baseColor) ? 0xff000000 : 0x8a000000), PorterDuff.Mode.SRC_IN);
 
             iconBitmaps[1] = origin.copy(Bitmap.Config.ARGB_8888, true);
             canvas = new Canvas(iconBitmaps[1]);
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             canvas.drawColor(primaryColor, PorterDuff.Mode.SRC_IN);
 
             iconBitmaps[2] = origin.copy(Bitmap.Config.ARGB_8888, true);
             canvas = new Canvas(iconBitmaps[2]);
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             canvas.drawColor(baseColor & 0x00ffffff | (Colors.isLight(baseColor) ? 0x4c000000 : 0x42000000), PorterDuff.Mode.SRC_IN);
 
             iconBitmaps[3] = origin.copy(Bitmap.Config.ARGB_8888, true);
             canvas = new Canvas(iconBitmaps[3]);
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             canvas.drawColor(errorColor, PorterDuff.Mode.SRC_IN);
         } else {
             iconBitmaps[0] = origin.copy(Bitmap.Config.ARGB_8888, true);
@@ -513,7 +519,7 @@ public class MaterialEditText3 extends AppCompatEditText {
                 scaledHeight = dIconSizeDp;
                 scaledWidth = (int) (dIconSizeDp * ((float) width / height));
             }
-            return Bitmap.createScaledBitmap(origin, scaledWidth, scaledHeight, false);
+            return Bitmap.createScaledBitmap(origin, scaledWidth, scaledHeight, true);
         } else {
             return origin;
         }
@@ -618,15 +624,15 @@ public class MaterialEditText3 extends AppCompatEditText {
      * @return 是否相同。
      */
     public boolean isSemp() {
-        LogUtils.d("以前= " + proText + "，现在= " + getText());
+        LogUtils.d("以前= " + priorText + "，现在= " + getText());
         if (TextUtils.isEmpty(getText())) {
-            if (TextUtils.isEmpty(proText)) {
+            if (TextUtils.isEmpty(priorText)) {
                 return true;
             } else {
                 return false;
             }
         } else {
-            return getText().toString().equals(proText);
+            return getText().toString().equals(priorText);
         }
     }
 
@@ -671,7 +677,7 @@ public class MaterialEditText3 extends AppCompatEditText {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (isOne) {
-            proText = getText().toString();
+            priorText = getText().toString();
             textSize = getTextSize();
             isOne = false;
         }
@@ -859,7 +865,7 @@ public class MaterialEditText3 extends AppCompatEditText {
      * 更新文本内容(如按保存后)。
      */
     public void updateText() {
-        proText = getText().toString();
+        priorText = getText().toString();
     }
 
 
