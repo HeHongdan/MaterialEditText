@@ -19,33 +19,35 @@
             android:orientation="vertical"
             >
 
-            <com.hehongdan.materialedittext.MaterialEditText
+            <com.hehongdan.materialedittext.CareersheEditText
                 android:id="@+id/met_"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="64dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:textSize="15sp"
+                android:textSize="25sp"
                 android:text="千职鹤"
-                android:hint="输入内容"
+                android:hint="填写学号"
+                android:textStyle="bold"
+
                 app:met_textColorHint="#CCCCCC"
+                app:met_maxCharacters="20"
+                app:met_minCharacters="2"
 
                 app:met_changeColor="true"
+                app:met_clearMultiColour="true"
                 app:met_clearButton="true"
-                app:met_iconLeft="@drawable/ic_e_"
-                app:met_iconRight="@drawable/icon"
-                app:met_iconPadding="8dp"
 
-                app:met_maxCharacters="5"
-                app:met_minCharacters="3"
+                app:met_iconRight="@drawable/ic_e_"
+                app:met_rightIconPaddingLeft="8dp"
 
-
-                app:met_leftText="名称"
-                app:met_leftTextColor="#CCCCCC"
-                app:met_leftTextPaddingRight="8dp"
-
+                app:met_leftText="学号"
+                app:met_leftTextColor="#999999"
+                app:met_leftTextPaddingRight="53dp"
                 />
-            <!--#999999-->
+            <!--
+            #999999
+            -->
 
 
             <Button
