@@ -7,6 +7,8 @@
     <attr name="met_leftTextColor" format="color" />
     <!-- 左边文本(内)边距。-->
     <attr name="met_leftTextPaddingRight" format="dimension" />
+    <attr name="met_leftIconPaddingRight" format="dimension" />
+    <attr name="met_rightIconPaddingLeft" format="dimension" />
 
     <!-- 是否改变颜色(获得焦点、错误时)。-->
     <attr name="met_changeColor" format="boolean" />

@@ -9,9 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -37,29 +37,25 @@ import java.util.List;
 
 
 /**
- * 类描述：。
+ * 类描述：自定义输入框。
  *
  * @author HeHongdan
  * @date 2021/1/26
  * @since v2021/1/26
  */
-public class MaterialEditText2 extends AppCompatEditText {
+public class MaterialEditText3 extends AppCompatEditText {
     /** 图标的大小(默认)。 */
-    private final int clearIconSizeDp = 32;
+    private final int dIconSizeDp = Density.dp2px(getContext(), 16);
     /** 图标外部宽度(默认)。 */
-    private final int clearIconOuterHeightDp = 32;
+    private final int dIconOuterHeightDp = 16;
     /** 图标外部高度(默认)。 */
-    private final int clearIconOuterWidthDp = 24;
+    private final int dIconOuterWidthDp = 16;
 
 
+    /** 之前的文本内容。 */
     private String proText;
 
-    /** 图标的大小。 */
-    private int iconSize;
-    /** 图标外部宽度。 */
-    private int iconOuterWidth;
-    /** 图标外部高度。 */
-    private int iconOuterHeight;
+
 
 
     /** 左边文本。 */
@@ -68,7 +64,7 @@ public class MaterialEditText2 extends AppCompatEditText {
     private int leftTextColor;
     /** 左边文本宽度。 */
     private float leftTextWidth = 0;
-    /** 左边文本宽度。 */
+    /** 左边文本宽度。 *///TODO
     private float leftTextOuterWidth = 0;
     /** 左边文本的(内)边距。 */
     private int leftTextPaddingRight;
@@ -111,25 +107,52 @@ public class MaterialEditText2 extends AppCompatEditText {
     private Bitmap[] clearButtonBitmaps;
     /** 是否显示清除按钮。 */
     private boolean showClearButton;
+
+
+    /** 左边图标右(内)边距。 */
+    private float leftIconPaddingRight;
+    /** 左边图标右(内)边距。 */
+    private float rightIconPaddingLeft;
+    /** 左边图标右(内)边距。 */
+    private float leftIconOuterWidth;
+    /** 左边图标右(内)边距。 */
+    private float rightIconOuterWidth;
+    /** 左边图标右(内)边距。 */
+    private float leftIconOuterHeight;
+    /** 左边图标右(内)边距。 */
+    private float rightIconOuterHeight;
+    /** 左边图标右(内)边距。 */
+    private float clearButtonOuterWidth;
+
+
+
+    /** 图标的大小。 */
+    //private int iconSize;
+    /** 图标外围的宽度。 */
+    //private int iconOuterWidth;
+    /** 图标外围的高度。 */
+    //private int iconOuterHeight;
     /** 图标的(内)边距。 */
-    private int iconPadding;
+    //private int iconPadding;
 
 
-    /** 左(内)边距。 */
+
+
+    /** 左(内部的)边距。 */
     private int innerPaddingLeft;
-    /** 右(内)边距。 */
+    /** 右(内部的)边距。 */
     private int innerPaddingRight;
-    /** 上(内)边距。 */
+    /** 上(内部的)边距。 */
     private int innerPaddingTop;
-    /** 下(内)边距。 */
+    /** 下(内部的)边距。 */
     private int innerPaddingBottom;
 
     /** 正文和内部顶部填充之间的间距。 */
     private int extraPaddingTop;
     private int extraPaddingBottom;
     /** 正文和左侧之间的多余间距，实际上是左侧图标的间距。 */
-    private int extraPaddingLeft;
-    private int extraPaddingRight;
+    private float extraPaddingLeft;
+    private float extraPaddingRight;
 
     /** 焦点变化监听事件(选中)。 */
     private OnFocusChangeListener innerFocusChangeListener;
@@ -220,17 +243,17 @@ public class MaterialEditText2 extends AppCompatEditText {
     }
 
 
-    public MaterialEditText2(Context context) {
+    public MaterialEditText3(Context context) {
         super(context);
         init(context, null);
     }
 
-    public MaterialEditText2(Context context, AttributeSet attrs) {
+    public MaterialEditText3(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public MaterialEditText2(Context context, AttributeSet attrs, int style) {
+    public MaterialEditText3(Context context, AttributeSet attrs, int style) {
         super(context, attrs, style);
         init(context, attrs);
     }
@@ -243,9 +266,9 @@ public class MaterialEditText2 extends AppCompatEditText {
         }
 
         //32dp
-        iconSize = Density.dp2px(getContext(), clearIconSizeDp);
-        iconOuterWidth = Density.dp2px(getContext(), clearIconOuterWidthDp);
-        iconOuterHeight = Density.dp2px(getContext(), clearIconOuterHeightDp);
+        //iconSize = Density.dp2px(getContext(), dIconSizeDp);
+        //iconOuterWidth = Density.dp2px(getContext(), dIconOuterWidthDp);
+        //iconOuterHeight = Density.dp2px(getContext(), dIconOuterHeightDp);
 
         // default baseColor is black
         int defaultBaseColor = Color.BLACK;
@@ -263,11 +286,13 @@ public class MaterialEditText2 extends AppCompatEditText {
         minCharacters = typedArray.getInt(R.styleable.MaterialEditText_met_minCharacters, 0);
         maxCharacters = typedArray.getInt(R.styleable.MaterialEditText_met_maxCharacters, 0);
 
-        iconLeftBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconLeft, -1));
-        iconRightBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconRight, -1));
+        iconLeftBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconLeft, -1), Density.dp2px(getContext(), 16));
+        iconRightBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconRight, -1), Density.dp2px(getContext(), 16));
         showClearButton = typedArray.getBoolean(R.styleable.MaterialEditText_met_clearButton, false);
-        clearButtonBitmaps = generateIconBitmaps(R.drawable.met_ic_clear);
-        iconPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_iconPadding, Density.dp2px(getContext(), 0));
+        clearButtonBitmaps = generateIconBitmaps(R.drawable.met_ic_clear, Density.dp2px(getContext(), 32));
+        //iconPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_iconPadding, Density.dp2px(getContext(), 0));
+        leftIconPaddingRight = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_leftIconPaddingRight, Density.dp2px(getContext(), 16));
+        rightIconPaddingLeft = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_rightIconPaddingLeft, Density.dp2px(getContext(), 16));
 
         leftTextPaddingRight = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_leftTextPaddingRight, Density.dp2px(getContext(), 0));
 
@@ -407,7 +432,7 @@ public class MaterialEditText2 extends AppCompatEditText {
      * @param origin 图标资源Id。
      * @return 位图。
      */
-    private Bitmap[] generateIconBitmaps(@DrawableRes int origin) {
+    private Bitmap[] generateIconBitmaps(@DrawableRes int origin,final int iconSiz) {
         if (origin == -1) {
             return null;
         }
@@ -415,27 +440,11 @@ public class MaterialEditText2 extends AppCompatEditText {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(getResources(), origin, options);
         int size = Math.max(options.outWidth, options.outHeight);
-        options.inSampleSize = size > iconSize ? size / iconSize : 1;
+        options.inSampleSize = size >  dIconSizeDp? size / dIconSizeDp : 1;
         options.inJustDecodeBounds = false;
 
-        return generateIconBitmaps(BitmapFactory.decodeResource(getResources(), origin, options));
-    }
-
-    /**
-     * 生成(位图)图标。
-     *
-     * @param drawable
-     * @return
-     */
-    private Bitmap[] generateIconBitmaps(Drawable drawable) {
-        if (drawable == null) {
-            return null;
-        }
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return generateIconBitmaps(Bitmap.createScaledBitmap(bitmap, iconSize, iconSize, false));
+        LogUtils.d(getResources() + " " + origin + " " + options);
+        return generateIconBitmaps(BitmapFactory.decodeResource(getResources(), origin, options),iconSiz);
     }
 
     /**
@@ -444,12 +453,14 @@ public class MaterialEditText2 extends AppCompatEditText {
      * @param origin 位图。
      * @return 位图。
      */
-    private Bitmap[] generateIconBitmaps(Bitmap origin) {
+    private Bitmap[] generateIconBitmaps(Bitmap origin,final int iconSiz) {
         if (origin == null) {
             return null;
         }
         Bitmap[] iconBitmaps = new Bitmap[4];
-        origin = scaleIcon(origin);
+        LogUtils.d("原图= "+origin);
+        origin = scaleIcon(origin, iconSiz);
+        LogUtils.w("原图= "+origin);
 
         if (changeColor) {
             iconBitmaps[0] = origin.copy(Bitmap.Config.ARGB_8888, true);
@@ -483,24 +494,24 @@ public class MaterialEditText2 extends AppCompatEditText {
     /**
      * 图标尺寸。
      *
-     * @param origin
+     * @param origin 原图。
      * @return
      */
-    private Bitmap scaleIcon(Bitmap origin) {
+    private Bitmap scaleIcon(final Bitmap origin,final int iconSiz) {
         int width = origin.getWidth();
         int height = origin.getHeight();
         int size = Math.max(width, height);
-        if (size == iconSize) {
+        if (size == dIconSizeDp) {
             return origin;
-        } else if (size > iconSize) {
+        } else if (size > dIconSizeDp) {
             int scaledWidth;
             int scaledHeight;
-            if (width > iconSize) {
-                scaledWidth = iconSize;
-                scaledHeight = (int) (iconSize * ((float) height / width));
+            if (width > dIconSizeDp) {
+                scaledWidth = dIconSizeDp;
+                scaledHeight = (int) (dIconSizeDp * ((float) height / width));
             } else {
-                scaledHeight = iconSize;
-                scaledWidth = (int) (iconSize * ((float) width / height));
+                scaledHeight = dIconSizeDp;
+                scaledWidth = (int) (dIconSizeDp * ((float) width / height));
             }
             return Bitmap.createScaledBitmap(origin, scaledWidth, scaledHeight, false);
         } else {
@@ -517,16 +528,19 @@ public class MaterialEditText2 extends AppCompatEditText {
     private boolean insideClearButton(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        int startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding));
-        int endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - iconOuterWidth - iconPadding);
-        int buttonLeft;
+        float startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (leftIconOuterWidth + leftIconPaddingRight));
+        float endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - rightIconOuterWidth - rightIconPaddingLeft);
+        float buttonLeft;
+        float iconOuterWidth;
         if (isRTL()) {
             buttonLeft = startX;
+            iconOuterWidth = leftIconOuterWidth;
         } else {
-            buttonLeft = endX - iconOuterWidth;
+            buttonLeft = endX - rightIconOuterWidth;
+            iconOuterWidth = rightIconOuterWidth;
         }
-        int buttonTop = getScrollY() + getHeight() - getPaddingBottom() + bottomSpacing - iconOuterHeight;
-        return (x >= buttonLeft && x < buttonLeft + iconOuterWidth && y >= buttonTop && y < buttonTop + iconOuterHeight);
+        float buttonTop = getScrollY() + getHeight() - getPaddingBottom() + bottomSpacing - Math.max(leftIconOuterHeight, rightIconOuterHeight);
+        return (x >= buttonLeft && x < buttonLeft + iconOuterWidth && y >= buttonTop && y < buttonTop + Math.max(leftIconOuterHeight, rightIconOuterHeight));
     }
 
     /**
@@ -603,7 +617,7 @@ public class MaterialEditText2 extends AppCompatEditText {
      *
      * @return 是否相同。
      */
-    public boolean isSame() {
+    public boolean isSemp() {
         LogUtils.d("以前= " + proText + "，现在= " + getText());
         if (TextUtils.isEmpty(getText())) {
             if (TextUtils.isEmpty(proText)) {
@@ -689,8 +703,8 @@ public class MaterialEditText2 extends AppCompatEditText {
      */
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        int startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding));
-        int endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - iconOuterWidth - iconPadding);
+        float startX = getScrollX() + (iconLeftBitmaps == null ? 0 : (leftIconOuterWidth + leftIconPaddingRight));
+        float endX = getScrollX() + (iconRightBitmaps == null ? getWidth() : getWidth() - rightIconOuterWidth - rightIconPaddingLeft);
         //底线的Y轴起点=滑动顶部+整高+底(内)边距
         int lineStartY = getScrollY() + getHeight() - getPaddingBottom();
 
@@ -712,10 +726,10 @@ public class MaterialEditText2 extends AppCompatEditText {
             paint.setAlpha(255);
             //【普通、选中(焦点)、不可用、无效】。
             Bitmap icon = iconLeftBitmaps[!isInternalValid() ? 3 : !isEnabled() ? 2 : hasFocus() ? 1 : 0];
-            float iconLeft = startX - iconPadding - iconOuterWidth + (iconOuterWidth - icon.getWidth()) / 2.0f + (leftTextWidth + leftTextPaddingRight);
-            correctIconY(icon);
+            float iconLeft = startX - leftIconPaddingRight - leftIconOuterWidth + (leftIconOuterWidth - icon.getWidth()) / 2.0f + (leftTextWidth + leftTextPaddingRight);
+            icon = correctIconY(icon);
             //图标顶部=底线+底空隙-图标外高+(图标外高-图标高度)
-            int iconTop = lineStartY + bottomSpacing - iconOuterHeight + (iconOuterHeight - icon.getHeight()) / 2;
+            float iconTop = lineStartY + bottomSpacing - leftIconOuterHeight + (leftIconOuterHeight - icon.getHeight()) / 2;
             canvas.drawBitmap(icon, iconLeft, iconTop, paint);
         }
 
@@ -723,10 +737,10 @@ public class MaterialEditText2 extends AppCompatEditText {
         if (iconRightBitmaps != null) {
             paint.setAlpha(255);
             Bitmap icon = iconRightBitmaps[!isInternalValid() ? 3 : !isEnabled() ? 2 : hasFocus() ? 1 : 0];
-            int iconRight = endX + iconPadding + (iconOuterWidth - icon.getWidth()) / 2;
-            correctIconY(icon);
-            int iconTop = lineStartY + bottomSpacing - iconOuterHeight + (iconOuterHeight - icon.getHeight()) / 2;
-            canvas.drawBitmap(icon, iconRight, iconTop, paint);
+            float iconLeft = endX + rightIconPaddingLeft + (rightIconOuterWidth - icon.getWidth()) / 2.0f;
+            icon = correctIconY(icon);
+            float iconTop = lineStartY + bottomSpacing - rightIconOuterHeight + (rightIconOuterHeight - icon.getHeight()) / 2;
+            canvas.drawBitmap(icon, iconLeft, iconTop, paint);
         }
 
         /** 绘制(清空)图标 */
@@ -734,13 +748,13 @@ public class MaterialEditText2 extends AppCompatEditText {
             paint.setAlpha(255);
             Bitmap clearButtonBitmap = clearButtonBitmaps[0];
 
-            int buttonLeft;
+            float buttonLeft;
             if (isRTL()) {
                 buttonLeft = startX;
             } else {
-                buttonLeft = endX - iconOuterWidth;
+                buttonLeft = endX - clearButtonBitmap.getWidth();
             }
-            buttonLeft += (iconOuterWidth - clearButtonBitmap.getWidth()) / 2;
+            buttonLeft += (clearButtonBitmap.getWidth() - clearButtonBitmap.getWidth()) / 2;
 
             //int iconTop = lineStartY + bottomSpacing - iconOuterHeight + (iconOuterHeight - clearButtonBitmap.getHeight()) / 2;
             int iconTop = (getHeight() - clearButtonBitmap.getHeight()) / 2;
@@ -754,20 +768,45 @@ public class MaterialEditText2 extends AppCompatEditText {
     /**
      * 矫正图标Y轴。
      *
-     * @param icon
+     * @param icon 图标。
      */
-    private void correctIconY(final Bitmap icon) {
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private Bitmap correctIconY(final Bitmap icon) {
         //HHD
-        if (iconOuterHeight > getHeight()) {
-            iconOuterHeight = getHeight();
-        }
         if (icon.getHeight() > getHeight()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                icon.setHeight(getHeight());
-            }else {
-                //TODO
-            }
+            return scaleBitmap(icon, getHeight());
+        } else {
+            return icon;
         }
+    }
+
+    /**
+     * 根据给定的宽和高进行拉伸。
+     *
+     * @param origin    原图。
+     * @param newHeight 新图的高。
+     * @return 拉伸后位图。
+     */
+    private Bitmap scaleBitmap(Bitmap origin, int newHeight) {
+        if (origin == null) {
+            return null;
+        }
+        int height = origin.getHeight();
+        int width = origin.getWidth();
+        int newWidth = newHeight * width / height;
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        // 使用后乘
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+        origin = newBM;
+//        if (!origin.isRecycled()) {
+//            origin.recycle();
+//        }
+
+        return origin;
     }
 
     /**
@@ -786,7 +825,7 @@ public class MaterialEditText2 extends AppCompatEditText {
 
 
         if (iconLeftBitmaps != null) {
-            extraPaddingLeft += (iconOuterWidth + iconPadding);
+            extraPaddingLeft += (leftIconOuterWidth + leftIconPaddingRight);
             LogUtils.d("左边额外= " + extraPaddingLeft);
         }
         if (!TextUtils.isEmpty(leftText)) {
@@ -796,23 +835,31 @@ public class MaterialEditText2 extends AppCompatEditText {
             leftTextPaddingRight = 0;
         }
 
-        extraPaddingRight = iconRightBitmaps == null ? 0 : (iconOuterWidth + iconPadding);
+        extraPaddingRight = iconRightBitmaps == null ? 0 : (rightIconOuterWidth + rightIconPaddingLeft);
+        clearButtonOuterWidth = clearButtonBitmaps == null ? 0 : (clearButtonBitmaps.length > 0 ? clearButtonBitmaps[0].getWidth() : 0);
         correctPaddings();
     }
 
     /**
-     * 将填充设置为正确的值
+     * 将填充设置为正确的值。
      */
     private void correctPaddings() {
-        int buttonsWidthLeft = 0, buttonsWidthRight = 0;
+        float buttonsWidthLeft = 0, buttonsWidthRight = 0;
         //清空按钮的宽度
-        int buttonsWidth = iconOuterWidth * getButtonsCount();
+        float buttonsWidth = clearButtonOuterWidth * getButtonsCount();
         if (isRTL()) {
             buttonsWidthLeft = buttonsWidth;
         } else {
             buttonsWidthRight = buttonsWidth;
         }
-        super.setPadding(innerPaddingLeft + extraPaddingLeft + buttonsWidthLeft, innerPaddingTop + extraPaddingTop, innerPaddingRight + extraPaddingRight + buttonsWidthRight, innerPaddingBottom + extraPaddingBottom);
+        super.setPadding((int) (innerPaddingLeft + extraPaddingLeft + buttonsWidthLeft), innerPaddingTop + extraPaddingTop, (int)(innerPaddingRight + extraPaddingRight + buttonsWidthRight), innerPaddingBottom + extraPaddingBottom);
+    }
+
+    /**
+     * 更新文本内容(如按保存后)。
+     */
+    public void updateText() {
+        proText = getText().toString();
     }
 
 

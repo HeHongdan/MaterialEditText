@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 		doSp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LogUtils.d("是否相同= "+basicEt.isSemp());
+				LogUtils.d("是否相同= "+basicEt.isSame());
 			}
 		});
 
